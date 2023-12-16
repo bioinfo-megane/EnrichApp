@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="card my-3">
+        <div class="card-header">
+            <h5>Input data</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">
+                    <p class="card-text">Select a species.</p>
+                    {{ form.input_species(class="form-select") }}
+                </div>
+                <div class="my-3">
+                    <p class="card-text">Paste a set of gene symbols in the text-box below.</p>
+                    {{ form.input_genes(class="form-control", rows="5") }}
+                </div>
+                {{ form.submit(class="btn btn-primary", role="button") }}
+            </form>
+            <form action="/clear_session" method="post">
+                <input type="submit" class="btn btn-outline-primary my-3" value="Clear">
+            </form>
+            {% if error_message %}
+            <div class="alert alert-danger my-3" role="alert">
+                {{ error_message }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card my-3">
+        <div class="card-header">
+            <h5>Gene Information</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                {{ gene_table|safe }}
+            </div>
+        </div>
+    </div>
+    {% if species != "human" %}
+    <div class="card my-3">
+        <div class="card-header">
+            <h5>Gene Information (Converted to human)</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                {{ human_gene_table|safe }}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.display').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'csv', 'excel'
+            ]
+        });
+    });
+</script>
+<style>
+    .display {
+        font-size: 80%;
+    }
+</style>
+
+{% endblock %}
