@@ -5,3 +5,4 @@ _zip/
 webapp/__pycache__/
 webapp/blue/enrichApp/__pycache__/
 instance/
+static/
